@@ -10,10 +10,14 @@ public class GryoController implements Controller {
     private static final SPI.Port kGyroPort = SPI.Port.kOnboardCS0;
     public ADXRS450_Gyro m_gyro;
 
-    @Override
-    public void initController() {
+    public GryoController(){
         m_gyro = new ADXRS450_Gyro(kGyroPort);
         m_gyro.calibrate();
+    }
+
+    @Override
+    public void initController() {
+        
     }
 
     @Override

@@ -29,12 +29,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    _driveController = new DriveController();
+    _gryoController = new GryoController();
+    _solenoidController = new SolenoidController();
     _driveController.initController();
     _solenoidController.initController();
     _gryoController.initController();
     
     
-    m_robot = new DifferentialDrive(_driveController.rightMotorGroup, _driveController.rightMotorGroup);
+    m_robot = new DifferentialDrive(_driveController.m_leftMotor, _driveController.m_rightMotor);
     ultrasonic = new AnalogInput(0);
 
     joystick = new Joystick(0);

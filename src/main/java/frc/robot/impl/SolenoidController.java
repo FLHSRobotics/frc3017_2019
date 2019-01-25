@@ -15,11 +15,15 @@ public class SolenoidController implements Controller {
   private DoubleSolenoid solenoid2;
   private Compressor compressor;
 
+  public SolenoidController(){
+    solenoid1 = new DoubleSolenoid(0, 1);
+    solenoid2 = new DoubleSolenoid(2, 3);
+    compressor = new Compressor();
+  }
+
   @Override
   public void initController() {
-    solenoid1 = new DoubleSolenoid(1, 2);
-    solenoid2 = new DoubleSolenoid(0, 1);
-    compressor = new Compressor();
+    
   }
 
   /**

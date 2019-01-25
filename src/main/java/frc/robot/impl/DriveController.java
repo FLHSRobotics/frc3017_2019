@@ -9,28 +9,33 @@ import frc.robot.interfaces.Controller;
 public class DriveController implements Controller {
 
     //Spark Max CAN address
-    private Integer frontLeftCAN    = 2;
-    private Integer rearLeftCAN     = 3;
-    private Integer frontRightCAN   = 0;
-    private Integer rearRightCAN    = 1;
+    public int frontLeftCAN    = 2;
+    public int rearLeftCAN     = 3;
+    public int frontRightCAN   = 0;
+    public int rearRightCAN    = 1;
 
     private CANSparkMax  m_frontLeft;
     private CANSparkMax m_rearLeft;
     private CANSparkMax m_frontRight;
     private CANSparkMax m_rearRight;
 
-    public SpeedControllerGroup leftMotorGroup;
-    public SpeedControllerGroup rightMotorGroup;
+    public SpeedControllerGroup m_leftMotor;
+    public SpeedControllerGroup m_rightMotor;
 
-    @Override
-    public void initController() {
+    public DriveController(){
         m_frontLeft = new CANSparkMax(frontLeftCAN, MotorType.kBrushless);
         m_rearLeft = new CANSparkMax(rearLeftCAN, MotorType.kBrushless);
-        leftMotorGroup = new SpeedControllerGroup(m_frontLeft, m_rearLeft);
+        m_leftMotor = new SpeedControllerGroup(m_frontLeft, m_rearLeft);
 
         m_frontRight = new CANSparkMax(frontRightCAN, MotorType.kBrushless);
         m_rearRight = new CANSparkMax(rearRightCAN, MotorType.kBrushless);
-        rightMotorGroup = new SpeedControllerGroup(m_frontRight, m_rearRight);
+        m_rightMotor = new SpeedControllerGroup(m_frontRight, m_rearRight);
+    }
+    
+
+    @Override
+    public void initController() {
+        
     }
 
     @Override
