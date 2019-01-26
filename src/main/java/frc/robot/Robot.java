@@ -1,8 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,25 +22,29 @@ public class Robot extends TimedRobot {
   private DifferentialDrive m_robot;
   private AnalogInput ultrasonic;
 
+  private SolenoidControllerImpl solenoidController;
+  private DriveController driveController;
+  private GryoController gryoController;
 
-  private SolenoidController _solenoidController;
-  private DriveController _driveController;
-  private GryoController _gryoController;
+  private DoubleSolenoid solenoid2;
 
   /**
    * Robot Init method
    */
   @Override
   public void robotInit() {
-    _driveController = new DriveController();
-    _gryoController = new GryoController();
-    _solenoidController = new SolenoidController();
-    _driveController.initController();
-    _solenoidController.initController();
-    _gryoController.initController();
+    driveController = new DriveController();
+    gryoController = new GryoController();
+    solenoidController = new SolenoidControllerImpl();
+    driveController.initController();
+    solenoidController.initController();
+    gryoController.initController();
+
+     solenoid2 = new DoubleSolenoid(2, 3);
+
     
     
-    m_robot = new DifferentialDrive(_driveController.m_leftMotor, _driveController.m_rightMotor);
+    m_robot = new DifferentialDrive(driveController.m_leftMotor, driveController.m_rightMotor);
     ultrasonic = new AnalogInput(0);
 
     joystick = new Joystick(0);
@@ -75,14 +82,19 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     m_robot.arcadeDrive(joystick.getY(), joystick.getX());
-    _solenoidController.runController();
+    solenoidController.runController();
 
     if (joystick.getRawButton(3)) {
-      _solenoidController.setSolenoidForward();
+      solenoidController.setSolenoidForward();
     } else if (joystick.getRawButton(4)) {
-      _solenoidController.setSolenoidReverse();
-    } else {
-      _solenoidController.setSolenoidOff();
+      solenoidController.setSolenoidReverse();
+    } else if(joystick.getRawButton(5)){
+      solenoid2.set(Value.kForward);
+    } else if(joystick.getRawButton(6)){
+      solenoid2.set(Value.kReverse);
+    }else {
+      solenoidController.setSolenoidOff();
+      solenoid2.set(Value.kOff);
     }
   }
 

@@ -9,15 +9,14 @@ import frc.robot.interfaces.Controller;
 /**
  * Solenoid Controller Class
  */
-public class SolenoidController implements Controller {
+public class SolenoidControllerImpl implements Controller {
 
   private DoubleSolenoid solenoid1;
   private DoubleSolenoid solenoid2;
   private Compressor compressor;
 
-  public SolenoidController(){
+  public SolenoidControllerImpl(){
     solenoid1 = new DoubleSolenoid(0, 1);
-    solenoid2 = new DoubleSolenoid(2, 3);
     compressor = new Compressor();
   }
 
@@ -48,7 +47,7 @@ public class SolenoidController implements Controller {
    */
   public void setSolenoidForward() {
     solenoid1.set(Value.kForward);
-    solenoid2.set(Value.kReverse);
+    //solenoid2.set(Value.kReverse);
   }
 
   /**
@@ -56,7 +55,7 @@ public class SolenoidController implements Controller {
    */
   public void setSolenoidReverse() {
     solenoid1.set(Value.kReverse);
-    solenoid2.set(Value.kForward);
+    //solenoid2.set(Value.kForward);
   }
 
   /**
@@ -64,7 +63,7 @@ public class SolenoidController implements Controller {
    */
   public void setSolenoidOff() {
     solenoid1.set(Value.kOff);
-    solenoid2.set(Value.kOff);
+    //solenoid2.set(Value.kOff);
   }
 
 }
