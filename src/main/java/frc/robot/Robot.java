@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import frc.robot.impl.*;
@@ -19,6 +20,8 @@ public class Robot extends TimedRobot {
   private DriveControllerImpl driveController;
   private GyroSensorImpl gyroSensorImpl;
 
+  private VictorSP liftMotor;
+
   /**
    * Robot Init method
    */
@@ -30,7 +33,6 @@ public class Robot extends TimedRobot {
 
     driveController.initController();
     solenoidController.initController();
-
     gyroSensorImpl.initSensor();
 
     m_robot = new DifferentialDrive(driveController.m_leftMotor,
@@ -38,8 +40,11 @@ public class Robot extends TimedRobot {
 
     joystick = new Joystick(0);
 
+    liftMotor = new VictorSP(0);
+
     solenoidController.addSolenoid(0, 1);
     solenoidController.addSolenoid(2, 3);
+    solenoidController.addSingleSolenoid(4);
   }
 
   /**
@@ -74,6 +79,15 @@ public class Robot extends TimedRobot {
     m_robot.arcadeDrive(joystick.getY(), joystick.getX());
     solenoidController.runController();
 
+    if(joystick.getRawButton(12)){
+      liftMotor.set(0.75);
+    }else if(joystick.getRawButton(11)){
+      liftMotor.set(-0.75);
+    }else{
+      liftMotor.set(0);
+    }
+    
+
     if (joystick.getRawButton(3)) {
       solenoidController.setSolenoidForward(0);
     } else if (joystick.getRawButton(4)) {
@@ -82,8 +96,13 @@ public class Robot extends TimedRobot {
       solenoidController.setSolenoidForward(1);
     } else if (joystick.getRawButton(6)) {
       solenoidController.setSolenoidForward(1);
-    } else {
+    } else if (joystick.getRawButton(2)){
+      //System.out.println("set single solenoid on");
+      solenoidController.setSingleSolenoidOn(0);
+    } 
+    else {
       solenoidController.setAllSolenoidOff();
     }
+
   }
 }

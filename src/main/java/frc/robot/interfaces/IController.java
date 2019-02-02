@@ -1,6 +1,6 @@
 package frc.robot.interfaces;
 
-public interface IController {
+public abstract interface IController {
   public void initController();
 
   public void runController();

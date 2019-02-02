@@ -1,6 +1,6 @@
 package frc.robot.interfaces;
 
-public interface ISensor {
+public abstract interface ISensor {
   public void initSensor();
 
   public double getReading();

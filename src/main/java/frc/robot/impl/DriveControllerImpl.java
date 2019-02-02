@@ -9,10 +9,10 @@ import frc.robot.interfaces.IController;
 public class DriveControllerImpl implements IController {
 
   // Spark Max CAN address
-  private int frontLeftCAN = 2;
-  private int rearLeftCAN = 3;
-  private int frontRightCAN = 0;
-  private int rearRightCAN = 1;
+  public int frontLeftCAN = 2;
+  public int rearLeftCAN = 3;
+  public int frontRightCAN = 0;
+  public int rearRightCAN = 1;
 
   private CANSparkMax frontLeft;
   private CANSparkMax rearLeft;
@@ -24,10 +24,10 @@ public class DriveControllerImpl implements IController {
 
   public DriveControllerImpl(int frontLeftCAN, int rearLeftCAN,
                              int frontRightCAN, int rearRightCAN) {
-    this.frontLeftCAN = frontLeftCAN;
-    this.rearLeftCAN = rearLeftCAN;
-    this.frontRightCAN = frontLeftCAN;
-    this.rearLeftCAN = rearLeftCAN;
+    // this.frontLeftCAN = frontLeftCAN;
+    // this.rearLeftCAN = rearLeftCAN;
+    // this.frontRightCAN = frontLeftCAN;
+    // this.rearLeftCAN = rearLeftCAN;
   }
 
   @Override
