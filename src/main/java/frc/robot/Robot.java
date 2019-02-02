@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -19,8 +20,11 @@ public class Robot extends TimedRobot {
   private SolenoidControllerImpl solenoidController;
   private DriveControllerImpl driveController;
   private GyroSensorImpl gyroSensorImpl;
+  
+  private int button9State;
 
   private VictorSP liftMotor;
+
 
   /**
    * Robot Init method
@@ -81,8 +85,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_robot.arcadeDrive(joystick.getY(), joystick.getX());
     solenoidController.runController();
-    
-    System.out.println(joystick.getPOV());
+
     if(joystick.getPOV() == 0){
       liftMotor.set(0.75);
     }else if(joystick.getPOV() == 180){
@@ -91,6 +94,23 @@ public class Robot extends TimedRobot {
       liftMotor.set(0);
     }
     
+    if (joystick.getRawButton(9)){
+      solenoidController.setSingleSolenoidOn(1);
+      Timer.delay(0.5);
+      solenoidController.setSingleSolenoidOn(2);
+    }
+    // } else if(joystick.getRawButton(9) && button9State == 1){
+    //   solenoidController.setSingleSolenoidOn(1);
+    //   solenoidController.setSingleSolenoidOff(2);
+    //   button9State = 0;
+    // } 
+    if(joystick.getRawButton(10)){
+      solenoidController.setSingleSolenoidOff(1);
+      Timer.delay(0.5);
+      solenoidController.setSingleSolenoidOff(2);
+    }
+    // System.out.print("[debug]Button 9 State: ");
+    // System.out.println(button9State);
     
 
     if (joystick.getRawButton(3)) {
@@ -100,18 +120,20 @@ public class Robot extends TimedRobot {
     } else if (joystick.getRawButton(5)) {
       solenoidController.setSolenoidForward(1);
     } else if (joystick.getRawButton(6)) {
-      solenoidController.setSolenoidForward(1);
-    } else if (joystick.getRawButton(9)){
-      solenoidController.setSingleSolenoidOn(0);
-    } else if(joystick.getRawButton(10)){
-      solenoidController.setSingleSolenoidOn(1);
-    } else if(joystick.getRawButton(11)){
-      solenoidController.setSingleSolenoidOn(2);
-    } else if(joystick.getRawButton(12)){
+      solenoidController.setSolenoidReverse(1);
+    }  else if(joystick.getRawButton(11)){
       solenoidController.setSingleSolenoidOn(3);
     }
+    else if(joystick.getRawButton(12)){
+      solenoidController.setSingleSolenoidOff(3);
+    }
+     else if(joystick.getRawButton(7)){
+      solenoidController.setSingleSolenoidOn(0);
+    } else if(joystick.getRawButton(8)){
+      solenoidController.setSingleSolenoidOff(0);
+    }
     else {
-      solenoidController.setAllSolenoidOff();
+      //solenoidController.setAllSolenoidOff();
     }
 
   }
