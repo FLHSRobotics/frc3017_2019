@@ -54,7 +54,7 @@ public class SolenoidControllerImpl implements IController {
   }
 
   public void addSingleSolenoid(int port){
-    Solenoid solenoid = new Solenoid(4);
+    Solenoid solenoid = new Solenoid(port);
     singleSolenoids.add(solenoid);
   }
 

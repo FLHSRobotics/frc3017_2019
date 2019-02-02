@@ -45,6 +45,9 @@ public class Robot extends TimedRobot {
     solenoidController.addSolenoid(0, 1);
     solenoidController.addSolenoid(2, 3);
     solenoidController.addSingleSolenoid(4);
+    solenoidController.addSingleSolenoid(5);
+    solenoidController.addSingleSolenoid(6);
+    solenoidController.addSingleSolenoid(7);
   }
 
   /**
@@ -78,14 +81,16 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_robot.arcadeDrive(joystick.getY(), joystick.getX());
     solenoidController.runController();
-
-    if(joystick.getRawButton(12)){
+    
+    System.out.println(joystick.getPOV());
+    if(joystick.getPOV() == 0){
       liftMotor.set(0.75);
-    }else if(joystick.getRawButton(11)){
+    }else if(joystick.getPOV() == 180){
       liftMotor.set(-0.75);
     }else{
       liftMotor.set(0);
     }
+    
     
 
     if (joystick.getRawButton(3)) {
@@ -96,10 +101,15 @@ public class Robot extends TimedRobot {
       solenoidController.setSolenoidForward(1);
     } else if (joystick.getRawButton(6)) {
       solenoidController.setSolenoidForward(1);
-    } else if (joystick.getRawButton(2)){
-      //System.out.println("set single solenoid on");
+    } else if (joystick.getRawButton(9)){
       solenoidController.setSingleSolenoidOn(0);
-    } 
+    } else if(joystick.getRawButton(10)){
+      solenoidController.setSingleSolenoidOn(1);
+    } else if(joystick.getRawButton(11)){
+      solenoidController.setSingleSolenoidOn(2);
+    } else if(joystick.getRawButton(12)){
+      solenoidController.setSingleSolenoidOn(3);
+    }
     else {
       solenoidController.setAllSolenoidOff();
     }
