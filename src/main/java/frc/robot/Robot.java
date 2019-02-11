@@ -47,10 +47,7 @@ public class Robot extends TimedRobot {
     solenoidController.addSolenoid(0, 1);
     solenoidController.addSolenoid(2, 3);
     //Signle Solenoid
-    solenoidController.addSingleSolenoid(4);
-    solenoidController.addSingleSolenoid(5);
     solenoidController.addSingleSolenoid(6);
-    solenoidController.addSingleSolenoid(7);
   }
 
   /**
@@ -100,22 +97,16 @@ public class Robot extends TimedRobot {
      * Signle Solenoid Control
      * Ball Suction block
      */
-    if(joystick.getRawButton(7)){
-      solenoidController.setSingleSolenoidOn(1);
-    }
-    else if(joystick.getRawButton(8)){
-      solenoidController.setSingleSolenoidOff(1);
-    }
-    else if (joystick.getRawButton(9)){
+    if (joystick.getRawButton(9)){
       solenoidController.setSolenoidForward(0);
-      solenoidController.setSingleSolenoidOn(2);
+      solenoidController.setSingleSolenoidOn(0);
     }
     else if(joystick.getRawButton(10)){
       solenoidController.setSolenoidReverse(0);
-      solenoidController.setSingleSolenoidOff(2);
+      solenoidController.setSingleSolenoidOff(0);
     }
-    if(joystick.getRawButton(11)){
-      solenoidController.setSingleSolenoidOn(2);
+    else if(joystick.getRawButton(11)){
+      solenoidController.setSingleSolenoidOn(0);
     }
     
 
