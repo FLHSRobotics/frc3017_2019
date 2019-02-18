@@ -3,8 +3,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
+import edu.wpi.first.wpilibj.shuffleboard.*;
 import frc.robot.impl.*;
 
 /**
@@ -18,9 +19,12 @@ public class Robot extends TimedRobot {
 
   private SolenoidControllerImpl solenoidController;
   private DriveControllerImpl driveController;
-  private GyroSensorImpl gyroSensorImpl;
-  
-  private VictorSP liftMotor;
+  private GyroSensorImpl gyroSensor;
+
+  private VictorSP rightLiftMotor, leftLiftMotor;
+  private Double liftPower;
+
+  private ShuffleboardTab tab;
 
 
   /**
@@ -29,24 +33,29 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveController = new DriveControllerImpl(2, 3, 0, 1);
-    gyroSensorImpl = new GyroSensorImpl();
+    gyroSensor = new GyroSensorImpl();
     solenoidController = new SolenoidControllerImpl();
+
+    tab = Shuffleboard.getTab("Dashboard");
 
     driveController.initController();
     solenoidController.initController();
-    gyroSensorImpl.initSensor();
+    gyroSensor.initSensor();
 
-    m_robot = new DifferentialDrive(driveController.m_leftMotor,
-                                    driveController.m_rightMotor);
+    m_robot = new DifferentialDrive(driveController.m_leftMotor, driveController.m_rightMotor);
 
     joystick = new Joystick(0);
 
-    liftMotor = new VictorSP(0);
+    // Lift Motor Control
+    leftLiftMotor = new VictorSP(0);
+    rightLiftMotor = new VictorSP(1);
 
-    //Double Solenoid
+    rightLiftMotor.setInverted(true);
+
+    // Double Solenoid
     solenoidController.addSolenoid(0, 1);
     solenoidController.addSolenoid(2, 3);
-    //Signle Solenoid
+    // Signle Solenoid
     solenoidController.addSingleSolenoid(6);
   }
 
@@ -71,7 +80,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    super.teleopInit();
+    this.liftPower = 0.85;
+    updateDashboard();
   }
 
   /**
@@ -85,46 +95,61 @@ public class Robot extends TimedRobot {
     /**
      * Lift control
      */
-    if(joystick.getPOV() == 0){
-      liftMotor.set(0.75);
-    }else if(joystick.getPOV() == 180){
-      liftMotor.set(-0.75);
-    }else{
-      liftMotor.set(0);
+    if (joystick.getPOV() == 0) {
+      leftLiftMotor.set(-liftPower);
+      rightLiftMotor.set(-liftPower);
+    } else if (joystick.getPOV() == 180) {
+      leftLiftMotor.set(-liftPower);
+      rightLiftMotor.set(-liftPower);
+    } else {
+      leftLiftMotor.set(0);
+      rightLiftMotor.set(0);
     }
-    
+
     /**
-     * Signle Solenoid Control
-     * Ball Suction block
+     * Signle Solenoid Control Ball Suction block
      */
-    if (joystick.getRawButton(9)){
+    if (joystick.getRawButton(9)) {
       solenoidController.setSolenoidForward(0);
       solenoidController.setSingleSolenoidOn(0);
-    }
-    else if(joystick.getRawButton(10)){
+    } else if (joystick.getRawButton(10)) {
       solenoidController.setSolenoidReverse(0);
       solenoidController.setSingleSolenoidOff(0);
-    }
-    else if(joystick.getRawButton(11)){
+    } else if (joystick.getRawButton(11)) {
       solenoidController.setSingleSolenoidOn(0);
     }
-    
 
     /**
      * Double Solenoid Control
      */
     if (joystick.getRawButton(3)) {
       solenoidController.setSolenoidForward(0);
-    }
-    else if (joystick.getRawButton(4)) {
+    } else if (joystick.getRawButton(4)) {
       solenoidController.setSolenoidReverse(0);
-    }
-    else if (joystick.getRawButton(5)) {
+    } else if (joystick.getRawButton(5)) {
       solenoidController.setSolenoidForward(1);
     }
     if (joystick.getRawButton(6)) {
       solenoidController.setSolenoidReverse(1);
     }
+  }
 
+  private void updateDashboard() {
+    ShuffleboardLayout solenoidLayout = tab.getLayout("Solenoid Status", BuiltInLayouts.kList).withSize(2, 2);
+    ShuffleboardLayout lifLayout = tab.getLayout("Lift Status", BuiltInLayouts.kList).withSize(2, 2);
+    ShuffleboardLayout driveLayout = tab.getLayout("Drive Status", BuiltInLayouts.kList).withSize(2, 3);
+    // Solenoid Layout
+    solenoidLayout.add("Ball Suction", solenoidController.getSingleSolenoid(0).get());
+    solenoidLayout.add("Hatch Panel Piston",
+        ((solenoidController.getSolenoid(0).get() == Value.kForward) ? "Retraced" : "Pushed"));
+
+    //Lift Layout
+    lifLayout.add("Lift Power",liftPower);
+    //Drive Layout
+    driveLayout.add("Joystick X value", joystick.getX());
+    driveLayout.add("Joystick Y value", joystick.getY());
+    driveLayout.add("Joystick Z value", joystick.getZ());
+    //General
+    tab.add("Compressor Status",solenoidController.getCompressor());
   }
 }

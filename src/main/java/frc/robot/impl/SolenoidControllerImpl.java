@@ -99,4 +99,15 @@ public class SolenoidControllerImpl implements IController {
     }
   }
 
+  public DoubleSolenoid getSolenoid(int channelIndex){
+      return solenoids.get(channelIndex);
+  }
+
+  public Solenoid getSingleSolenoid(int channelIndex){
+      return singleSolenoids.get(channelIndex);
+  }
+
+  public boolean getCompressor(){
+    return compressor.enabled();
+  }
 }
