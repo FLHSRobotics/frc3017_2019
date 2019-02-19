@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     this.liftPower = 0.45;
-    updateDashboard();
+    //updateDashboard();
   }
 
   /**
