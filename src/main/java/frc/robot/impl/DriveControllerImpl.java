@@ -34,7 +34,9 @@ public class DriveControllerImpl implements IController {
   public void initController() {
     frontLeft = new CANSparkMax(frontLeftCAN, MotorType.kBrushless);
     rearLeft = new CANSparkMax(rearLeftCAN, MotorType.kBrushless);
+
     m_leftMotor = new SpeedControllerGroup(frontLeft, rearLeft);
+
 
     frontRight = new CANSparkMax(frontRightCAN, MotorType.kBrushless);
     rearRight = new CANSparkMax(rearRightCAN, MotorType.kBrushless);
