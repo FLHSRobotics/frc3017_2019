@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    this.liftPower = 0.85;
+    this.liftPower = 0.45;
     updateDashboard();
   }
 
@@ -96,8 +96,8 @@ public class Robot extends TimedRobot {
      * Lift control
      */
     if (joystick.getPOV() == 0) {
-      leftLiftMotor.set(-liftPower);
-      rightLiftMotor.set(-liftPower);
+      leftLiftMotor.set(liftPower);
+      rightLiftMotor.set(liftPower);
     } else if (joystick.getPOV() == 180) {
       leftLiftMotor.set(-liftPower);
       rightLiftMotor.set(-liftPower);
