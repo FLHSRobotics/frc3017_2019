@@ -24,20 +24,19 @@ public class DriveControllerImpl implements IController {
 
   public DriveControllerImpl(int frontLeftCAN, int rearLeftCAN,
                              int frontRightCAN, int rearRightCAN) {
-    // this.frontLeftCAN = frontLeftCAN;
-    // this.rearLeftCAN = rearLeftCAN;
-    // this.frontRightCAN = frontLeftCAN;
-    // this.rearLeftCAN = rearLeftCAN;
+    this.frontLeftCAN = frontLeftCAN;
+    this.rearLeftCAN = rearLeftCAN;
+    this.frontRightCAN = frontLeftCAN;
+    this.rearLeftCAN = rearLeftCAN;
   }
 
   @Override
   public void initController() {
+    // left motor group
     frontLeft = new CANSparkMax(frontLeftCAN, MotorType.kBrushless);
     rearLeft = new CANSparkMax(rearLeftCAN, MotorType.kBrushless);
-
     m_leftMotor = new SpeedControllerGroup(frontLeft, rearLeft);
-
-
+    // right motor group
     frontRight = new CANSparkMax(frontRightCAN, MotorType.kBrushless);
     rearRight = new CANSparkMax(rearRightCAN, MotorType.kBrushless);
     m_rightMotor = new SpeedControllerGroup(frontRight, rearRight);
